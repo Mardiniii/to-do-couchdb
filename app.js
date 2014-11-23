@@ -2,7 +2,8 @@ $(document).ready(function(){
 	var server= "http://makeitreal.iriscouch.com/sebas-mardini";
 	var date = new Date();
 	var allTasks = "http://makeitreal.iriscouch.com/sebas-mardini/_design/tasklist/_view/alltasks";
-	//Block to detect a new task and save the information in CouchDB
+	
+	//Query event to detect a new task and save the information in CouchDB
 	$('#input').keyup(function(event){     
 	    var keycode = event.keyCode;         
 	    if(keycode == '13'){                 
@@ -27,20 +28,33 @@ $(document).ready(function(){
 		}
 	});
 
-	//Function to change background with mouseenter and add remove button
+	//Query event to delete task when click the X
+	$('.todo-list').on('click','.remove',function(){
+	    var id = $(this).closest("li").attr('id');
+	    var rev = $(this).closest("li").data("rev");
+	    console.log(id);
+	    $.ajax({
+	    	type: "DELETE",
+	    	url: server+"/"+id+"?rev="+rev,
+		    success: function(){console.log("Tarea eliminada")}
+	    });
+	    $(this).parent().remove();
+	  });
+
+	//Query event to change background with mouseenter and add remove button
 	$('.todo-list').on('mouseenter','.itemTask',function(){
 		$(this).css('background-color', '#edeff0');
 	    var clearTask = $('<div class="remove" style="display: inline-block;float: right"><strong>X</strong></div>');
 	    $(this).append(clearTask);
 	});
 
-	//Function to change background with mouseleave and delete remove button
+	//Query event to change background with mouseleave and delete remove button
 	$('.todo-list').on('mouseleave','.itemTask',function(){
 	   	$(this).css('background-color', 'white');
 		$(this).find(".remove").remove();
 	});
 
-	//Function to detect a click on button to filtering task
+	//Query event to detect a click on button to filtering task
 	$('.btn').on('click',function(){
 		var url = $(this).data("link");
 		$.get(url, processData);
@@ -57,14 +71,14 @@ $(document).ready(function(){
 
 	//Function to show task on Website
 	function showTask(text,data){
-		var newDivTask = $('<li id="'+data.id+'" class="itemTask"><input class="done-box" type="checkbox" name="check">' + text + '</li>');
+		var newDivTask = $('<li id="'+data.id+'" class="itemTask" data-rev="'+data.rev+'"><input class="done-box" type="checkbox" name="check">' + text + '</li>');
 		console.log(data._id);
 		$(".todo-list").append(newDivTask);
 	}
 
 	//Block to entry a new task into HTML
 	function insertTask(data){
-		var newDivTask = '<li id="'+data.value._id+'" class="itemTask">';
+		var newDivTask = '<li id="'+data.value._id+'" data-rev="'+data.value._rev+' "class="itemTask">';
 	    newDivTask += data.value.done ? '<input class="done-box" type="checkbox" name="check" checked="checked">' : '<input class="done-box" type="checkbox" name="check" >'; 
 	    newDivTask += data.value.title;
 	    newDivTask += '</li>';
