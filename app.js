@@ -35,6 +35,7 @@ $(document).ready(function(){
 
 	//Function to process the return JSON from CouchDB
 	function processData(data){
+		$(".todo-list").empty();
 		data = JSON.parse(data);
 		var result = data.rows;
 		console.log(result);
