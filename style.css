@@ -5,6 +5,7 @@ body {
   color: #333;
   font-family: 'Helvetica Nueue', sans-serif;
 }
+
 .remove{
   cursor: pointer;
 }
@@ -36,6 +37,10 @@ h1{
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
+}
+
+.done-box{
+  margin-right: 10px;
 }
 
 ul {
