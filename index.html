@@ -3,13 +3,29 @@
   <head>
     <meta charset="UTF-8">
     <title>Todo List</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   </head>
 
   <body>
     <div class="wrapper">
       <h1>Todo List</h1>
+
       <input type="text" id="input" placeholder="¿Qué necesitas hacer?">
+      
+      <div class="btn-group btn-group-justified button-filter" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+          <button type="button" id="button-todo" class="btn btn-default btn-warning" data-link="http://makeitreal.iriscouch.com/sebas-mardini/_design/tasklist/_view/todotasks">To Do Tasks</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" id="button-done" class="btn btn-default btn-success" data-link="http://makeitreal.iriscouch.com/sebas-mardini/_design/tasklist/_view/donetasks">Done Tasks</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" id="button-all" class="btn btn-default btn-info" data-link="http://makeitreal.iriscouch.com/sebas-mardini/_design/tasklist/_view/alltasks">All Tasks</button>
+        </div>
+      </div>
+
       <ul class="todo-list"></ul>
     </div>
 

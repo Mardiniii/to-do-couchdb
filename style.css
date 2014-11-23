@@ -9,6 +9,14 @@ body {
   cursor: pointer;
 }
 
+h1{
+  text-align: center;
+}
+.button-filter{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .wrapper {
   background: white;
   width: 500px;
