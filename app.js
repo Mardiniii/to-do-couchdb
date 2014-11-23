@@ -27,7 +27,21 @@ $(document).ready(function(){
 		}
 	});
 
-	//Funcion para mostrar tarea en el website
+	//Function to detect a click on button to filtering task
+	$('.btn').on('click',function(){
+		var url = $(this).data("link");
+		$.get(url, processData);
+	});
+
+	//Function to process the return JSON from CouchDB
+	function processData(data){
+		data = JSON.parse(data);
+		var result = data.rows;
+		console.log(result);
+		result.forEach(insertTask);
+	}
+
+	//Function to show task on Website
 	function showTask(text,data){
 		var newDivTask = $('<li id="'+data.id+'" class="itemTask"><input class="done" type="checkbox" name="check">' + text + '</li>');
 		console.log(data._id);
@@ -36,9 +50,9 @@ $(document).ready(function(){
 
 	//Block to entry a new task into HTML
 	function insertTask(data){
-		var newDivTask = '<li id="'+data.id+'" class="itemTask">';
-	    newDivTask += data.done ? '<input class="done" type="checkbox" name="check" checked="checked">' : '<input class="done" type="checkbox" name="check" >'; 
-	    newDivTask += data.title;
+		var newDivTask = '<li id="'+data.value._id+'" class="itemTask">';
+	    newDivTask += data.value.done ? '<input class="done" type="checkbox" name="check" checked="checked">' : '<input class="done" type="checkbox" name="check" >'; 
+	    newDivTask += data.value.title;
 	    newDivTask += '</li>';
 	    var ndt = $(newDivTask);
 	    $(".todo-list").append(ndt);
@@ -47,7 +61,7 @@ $(document).ready(function(){
 	    }
     }
 
-    //Functio to generate Slug ID for each Task
+    //Function to generate Slug ID for each Task
     function slugifier(string) {
 	    string = string.replace(/\s{2,}/g, ' ');
 	    string = string.trim();
