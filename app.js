@@ -23,9 +23,25 @@ $(document).ready(function(){
                     console.log(data);
 		        	console.log("Tarea enviada");
 		        	showTask(textTask,data)}
-		      	});
+		    });
 		    $("#input").val('');
 		}
+	});
+
+	//Query event to mark a task donde or to do
+	$('.todo-list').on('click','.done-box',function(){
+		if( $(this).is(':checked')){
+			$(this).parent().addClass("checked");
+	    }else{
+	    	$(this).parent().removeClass("checked");      
+	    }
+	    var id = $(this).parent().attr('id');
+	    var rev = $(this).closest("li").data("rev");
+	    var url = server+"/"+id;
+	    $.get(url, function(data){
+	    	data = JSON.parse(data);
+	    	editTask(data);
+	    });
 	});
 
 	//Query event to delete task when click the X
@@ -60,12 +76,34 @@ $(document).ready(function(){
 		$.get(url, processData);
 	});
 
+	//Function to edit a task when is done or not
+	function editTask(data){
+		console.log(data);
+		var id = data._id;
+		var rev = data._rev;
+		var created = data.created_at;
+		var updated = date.getTime();;
+		var done = !data.done;
+		var title = data.title;
+		var type = data.type;
+		$.ajax({
+	    	type: "PUT",
+	    	url: server+"/"+id,
+	    	contentType: "application/json",
+	    	data: JSON.stringify({ "_rev": rev,"title": title,"done": done,"created_at": created,"updated_at": updated,"type": type}),
+	     	dayaType: "json",
+	    	success: function(data){
+                console.log(data);
+	        	console.log("Tarea editada")
+	    	}
+		});
+	}
+
 	//Function to process the return JSON from CouchDB
 	function processData(data){
 		$(".todo-list").empty();
 		data = JSON.parse(data);
 		var result = data.rows;
-		console.log(result);
 		result.forEach(insertTask);
 	}
 
@@ -78,13 +116,13 @@ $(document).ready(function(){
 
 	//Block to entry a new task into HTML
 	function insertTask(data){
-		var newDivTask = '<li id="'+data.value._id+'" data-rev="'+data.value._rev+' "class="itemTask">';
+		var newDivTask = '<li id="'+data.value._id+'" data-rev="'+data.value._rev+'" class="itemTask">';
 	    newDivTask += data.value.done ? '<input class="done-box" type="checkbox" name="check" checked="checked">' : '<input class="done-box" type="checkbox" name="check" >'; 
 	    newDivTask += data.value.title;
 	    newDivTask += '</li>';
 	    var ndt = $(newDivTask);
 	    $(".todo-list").append(ndt);
-	    if( $(".done", ndt).is(':checked') ){
+	    if( $(".done-box", ndt).is(':checked') ){
 	    	ndt.addClass("checked");
 	    }
     }
