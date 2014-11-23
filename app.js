@@ -28,6 +28,20 @@ $(document).ready(function(){
 		}
 	});
 
+	//Query to change title for task in list
+	//Query event to detect a click on button to filtering task
+	$('.btn').on('click',function(){
+		if($(this).attr('id')=="button-todo"){
+			$("#show-task").html("Tasks To Do");
+		}
+		if($(this).attr('id')=="button-done"){
+			$("#show-task").html("Done Tasks");
+		}
+		if($(this).attr('id')=="button-all"){
+			$("#show-task").html("All Tasks");
+		}
+	});
+
 	//Query event to mark a task donde or to do
 	$('.todo-list').on('click','.done-box',function(){
 		if( $(this).is(':checked')){
