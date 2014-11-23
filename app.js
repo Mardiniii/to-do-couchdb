@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	var server= "http://makeitreal.iriscouch.com/sebas-mardini";
 	var date = new Date();
-
+	var allTasks = "http://makeitreal.iriscouch.com/sebas-mardini/_design/tasklist/_view/alltasks";
 	//Block to detect a new task and save the information in CouchDB
 	$('#input').keyup(function(event){     
 	    var keycode = event.keyCode;         
@@ -72,4 +72,7 @@ $(document).ready(function(){
 	    string = string.replace(/[^0-9a-z-]/g,'');
 	    return string;
     }
+
+    //Loading all task storaged in CouchDB by default
+    $.get(allTasks,processData);
 });
